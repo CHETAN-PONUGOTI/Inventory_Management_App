@@ -1,0 +1,6 @@
+# Igonre the .env
+.env
+
+# ignore packages
+
+.package.json
