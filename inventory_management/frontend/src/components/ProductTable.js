@@ -42,7 +42,8 @@ const ProductTable = ({ products, refreshProducts, setSelectedProduct, sort, set
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {products.length > 0 ? (
+                    {/* FIX: Check if products is an array AND if it has length */}
+                    {Array.isArray(products) && products.length > 0 ? (
                         products.map(product => (
                             <ProductRow 
                                 key={product.id} 
@@ -53,7 +54,10 @@ const ProductTable = ({ products, refreshProducts, setSelectedProduct, sort, set
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={headers.length} className="p-4 text-center text-gray-500">No products found.</td>
+                            <td colSpan={headers.length} className="p-4 text-center text-gray-500">
+                                {/* Display a conditional message if data fetching has completed */}
+                                No products found. 
+                            </td>
                         </tr>
                     )}
                 </tbody>
