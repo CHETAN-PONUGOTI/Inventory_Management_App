@@ -1,4 +1,3 @@
-// frontend/src/components/Header.js
 import React, { useRef, useState, useEffect } from 'react';
 import { exportProducts, importProducts, createNewProduct } from '../api/productApi';
 
@@ -8,8 +7,9 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [newProductData, setNewProductData] = useState({ name: '', stock: 0, category: 'Electronics', brand: '' });
 
-    // Extract unique categories for the filter dropdown
-    const uniqueCategories = [...new Set(products.map(p => p.category))].filter(c => c);
+    const uniqueCategories = Array.isArray(products) 
+        ? [...new Set(products.map(p => p.category))].filter(c => c)
+        : [];
 
     const handleImportClick = () => {
         setImportMessage('');
@@ -33,13 +33,11 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
                 setImportMessage(`Import Failed: ${message}`);
             })
             .finally(() => {
-                // Reset file input value so the same file can be selected again
                 event.target.value = null; 
             });
     };
     
     const handleAddNewProduct = () => {
-        // Simple validation
         if (!newProductData.name.trim() || newProductData.stock < 0) {
             alert('Please provide a valid name and non-negative stock.');
             return;
@@ -65,7 +63,6 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
     return (
         <header className="mb-6">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                {/* Left Side: Search & Filter */}
                 <div className="flex space-x-4 w-full md:w-auto">
                     <input
                         type="text"
@@ -84,7 +81,6 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
                     </select>
                 </div>
 
-                {/* Right Side: Action Buttons */}
                 <div className="flex space-x-3">
                     <button 
                         onClick={() => setIsAddingNew(true)} 
@@ -104,7 +100,6 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
                     >
                         Export CSV
                     </button>
-                    {/* Hidden file input */}
                     <input 
                         type="file" 
                         ref={fileInputRef} 
@@ -117,7 +112,6 @@ const Header = ({ search, setSearch, category, setCategory, refreshProducts, pro
             
             {importMessage && <p className="mt-3 text-sm text-center text-gray-600">{importMessage}</p>}
 
-            {/* Add New Product Form/Modal */}
             {isAddingNew && (
                 <div className="mt-4 p-4 border rounded-lg bg-gray-50 shadow-inner">
                     <h4 className="font-semibold mb-2">Add New Product</h4>
